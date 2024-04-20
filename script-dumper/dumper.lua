@@ -467,6 +467,8 @@ coroutine.wrap(function()
 				local PropertyList = create("ScrollingFrame", {Parent = PropertiesWindow.Instance; CanvasSize = UDim2.new(0,0,0,0); Active = true;TopImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);BorderMode = Enum.BorderMode.Inset;Size = UDim2.new(0, 272, 0, 220);ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80);LayoutOrder = 5;BorderColor3 = Color3.fromRGB(34, 34, 34);ScrollBarThickness = 10;Name = [[InstancesFrame]];Position = UDim2.new(0, 0, 0, 0);BottomImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundTransparency = 1;})
 				local DataDropdown = createDropdown('Data', PropertyList)
 				local BehaviorDropdown = createDropdown('Behavior', PropertyList)
+				local TagsDropdown = createDropdown('Tags', PropertyList)
+				local AttributesDropdown = createDropdown('Attributes', PropertyList)
 
 				create('UIListLayout', { Parent = PropertyList })
 
@@ -477,6 +479,15 @@ coroutine.wrap(function()
 				for _, property in pairs(Properties[instance.ClassName].Behavior) do
 					createPropertyFrame(PropertyList, BehaviorDropdown, property, instance[property], false)
 				end
+						
+				for index, tag in pairs(instance:GetTags()) do
+					createPropertyFrame(PropertyList, TagsDropdown, index, tag, false)
+				end
+
+				for index, tag in pairs(instance:GetAttributes()) do
+					createPropertyFrame(PropertyList, AttributesDropdown, index, tag, false)
+				end
+
 			else return warn('cant do this no no no cant do this no jnone of that') end
 		end
 
