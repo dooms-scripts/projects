@@ -46,12 +46,12 @@ local Properties = {
 			"Name",
 			"Parent",
 		},
-		
+
 		Behavior = {
 			"Enabled",
 		}
 	},
-	
+
 	['ModuleScript'] = {
 		Data = {
 			"Archivable",
@@ -59,7 +59,7 @@ local Properties = {
 			"Name",
 			"Parent",
 		},
-		
+
 		Behavior = {}
 	}
 }
@@ -71,29 +71,29 @@ Dependencies.Mouse.Button1Down:Connect(function()
 			print('i be slangin')
 		end
 	end
-	
+
 	SettingsMenu.Visible = false
 end)
 
 --[[ FUNCTIONS ]]-------------------------------------------------------------
 function clearDump()
 	Dump = { LocalScripts = {}, ModuleScripts = {} }
-	
+
 	for _, __ in ipairs(InstanceList:GetChildren()) do
 		if __:IsA("TextButton") and __.Name == 'DropdownButton' then __:Destroy() end
 	end
-	
+
 	InstanceList.CanvasSize = UDim2.new(0,0,0,0)
 end
 
 function populateDump(callback)
 	LocalScriptDropdown = createDropdown('Local Scripts', InstanceList)
 	ModuleScriptDropdown = createDropdown('Module Scripts', InstanceList)
-	
+
 	local Filtering = false
 	local Filter
 	local Service
-	
+
 	if IndexFilter and IndexFilter ~= '' then
 		Filter = IndexFilter
 		Filtering = true
@@ -104,17 +104,17 @@ function populateDump(callback)
 	else 
 		Service = game 
 	end
-	
+
 	for _, instance in ipairs(Service:GetDescendants()) do
 		if instance:IsA('LocalScript') or instance:IsA('ModuleScript') then
 			local dropdown
 
 			if instance.ClassName == 'LocalScript' then dropdown = LocalScriptDropdown end
 			if instance.ClassName == 'ModuleScript' then dropdown = ModuleScriptDropdown end
-			
+
 			if Filtering then
 				if instance.Name:match(IndexFilter) then
-					
+
 					callback(instance, dropdown, instance.Name:gsub(IndexFilter, string.format('<b><font color="rgb(255, 255, 255)">%s</font></b>', IndexFilter)))
 					table.insert(Dump[instance.ClassName .. 's'], 'game.' .. instance:GetFullName())
 				end
@@ -127,12 +127,12 @@ function populateDump(callback)
 end
 
 function randomString()
-	local str
-	
+	local str = ''
+
 	for i=1, 10 do
 		str = str .. string.char(math.random(1, 255))
 	end
-	
+
 	return str
 end
 
@@ -171,7 +171,7 @@ Gui = create("ScreenGui", {Name = [[Gui]];Parent = nil; ZIndexBehavior = Enum.ZI
 
 function createWindow(data : {})
 	local Window = {}
-	
+
 	local WindowFrame = create("Frame", {Parent = Gui;Active = true;ClipsDescendants = true;BackgroundTransparency = 1;Draggable = true;Size = UDim2.new(data.Size.X.Scale, data.Size.X.Offset, 0, 0);AnchorPoint = data.Anchor;BorderColor3 = Color3.fromRGB(34, 34, 34);BorderMode = Enum.BorderMode.Inset;Name = [[Window]];Position = data.Position;Selectable = true;BackgroundColor3 = Color3.fromRGB(46, 46, 46);})
 	local TopbarFrame = create("Frame", {Parent = WindowFrame;Size = UDim2.new(1, 0, 0, 22);BackgroundTransparency = 1;BorderColor3 = Color3.fromRGB(34, 34, 34);LayoutOrder = 1;Name = [[Topbar]];BackgroundColor3 = Color3.fromRGB(53, 53, 53);})
 	local CloseButton = create("ImageButton", {Parent = TopbarFrame;BackgroundTransparency = 1;ImageTransparency = 1;AnchorPoint = Vector2.new(1, 0.5);Image = [[rbxassetid://13273265457]];BorderSizePixel = 0;Size = UDim2.new(0, 12, 0, 12);BorderColor3 = Color3.fromRGB(0, 0, 0);AutoButtonColor = false;Name = [[CloseButton]];Position = UDim2.new(1, 0, 0.5, 0);BackgroundColor3 = Color3.fromRGB(255, 255, 255);})
@@ -179,7 +179,7 @@ function createWindow(data : {})
 	create("UIPadding", {Parent = TopbarFrame;PaddingRight = UDim.new(0, 6);PaddingLeft = UDim.new(0, 6);})
 	create("UIPadding", {Parent = TextLabel;PaddingBottom = UDim.new(0, 1);})
 	create("UIListLayout", {Parent = WindowFrame;SortOrder = Enum.SortOrder.LayoutOrder;})
-	
+
 	function Window:Open()
 		coroutine.wrap(function()
 			local TransparencyTween = game:GetService('TweenService'):Create(WindowFrame, TweenInfo.new(0.25, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 0 })
@@ -195,12 +195,12 @@ function createWindow(data : {})
 			game:GetService('TweenService'):Create(TextLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { TextTransparency = 0 }):Play()
 		end)()
 	end
-	
+
 	function Window:Close()
 		game:GetService('TweenService'):Create(TopbarFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { BackgroundTransparency = 1 }):Play()
 		game:GetService('TweenService'):Create(CloseButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { ImageTransparency = 1 }):Play()
 		game:GetService('TweenService'):Create(TextLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { TextTransparency = 1 }):Play()
-		
+
 		task.wait(.55)
 
 		local SizeTween = game:GetService('TweenService'):Create(WindowFrame, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), { Size = UDim2.new(data.Size.X.Scale, data.Size.X.Offset, 0, 0) })
@@ -211,21 +211,21 @@ function createWindow(data : {})
 		TransparencyTween:Play()
 		TransparencyTween.Completed:Wait()
 	end
-	
+
 	CloseButton.MouseButton1Click:Connect(function()
 		Window:Close()
 		WindowFrame:Destroy()
 	end)
-	
+
 	Window.Instance = WindowFrame
 	return Window
 end
 
 function createDropdown(text : string, parent : Instance)
 	parent.CanvasSize += UDim2.new(0,0,0,18)
-	
+
 	local DropdownToggled = true
-	
+
 	local DropdownButton = create("TextButton", {Parent = parent;BackgroundTransparency = 0;BorderSizePixel = 0;BackgroundColor3 = Color3.fromRGB(56, 56, 56);BorderMode = Enum.BorderMode.Inset;TextSize = 14;Size = UDim2.new(1, -11, 0, 18);BorderColor3 = Color3.fromRGB(0, 0, 0);Text = [[]];Font = Enum.Font.SourceSans;Name = [[DropdownButton]];TextColor3 = Color3.fromRGB(0, 0, 0);})
 	local DropdownFrame = create("Frame", {Active = true;Parent = DropdownButton;Size = UDim2.new(1, 0, 0, 18);BorderColor3 = Color3.fromRGB(66, 66, 66);LayoutOrder = 1;BorderMode = Enum.BorderMode.Inset;Name = [[DropdownFrame]];BackgroundTransparency = 1;Selectable = true;BackgroundColor3 = Color3.fromRGB(53, 53, 53);})
 	local Label = create("TextLabel", {TextTruncate = Enum.TextTruncate.AtEnd;BorderSizePixel = 0;RichText = true;BackgroundColor3 = Color3.fromRGB(56, 56, 56);Parent = DropdownFrame;TextSize = 14;Size = UDim2.new(1, -16, 0, 19);LayoutOrder = 2;TextXAlignment = Enum.TextXAlignment.Left;BorderColor3 = Color3.fromRGB(0, 0, 0);Text = text;Font = Enum.Font.SourceSansBold;Name = [[Label]];Position = UDim2.new(0.0708661452, 0, -0.055555556, 0);TextColor3 = Color3.fromRGB(204, 204, 204);BackgroundTransparency = 1;})
@@ -236,26 +236,26 @@ function createDropdown(text : string, parent : Instance)
 	create("UIListLayout", {VerticalAlignment = Enum.VerticalAlignment.Center;FillDirection = Enum.FillDirection.Horizontal;Parent = DropdownFrame;Padding = UDim.new(0, 4);})
 	create("UIListLayout", {Parent = DropdownButton;SortOrder = Enum.SortOrder.LayoutOrder;})
 	create("UIListLayout", {Parent = Content;SortOrder = Enum.SortOrder.LayoutOrder;})
-	
+
 	DropdownButton.MouseButton1Click:Connect(function()
 		Content.Size = UDim2.new(1, 0, 0, 0)
 		DropdownToggled = not DropdownToggled
-		
+
 		if DropdownToggled then
 			ArrowButton.Rotation = 0
 			Content.Visible = true
-			
+
 			for _, child in ipairs(Content:GetChildren()) do
 				if child:IsA('Frame') then
 					Content.Size += UDim2.new(0, 0, 0, 18)
 					DropdownButton.Size += UDim2.new(0, 0, 0, 18)
 				end
 			end
-			
+
 		elseif not DropdownToggled then
 			ArrowButton.Rotation = 90
 			Content.Visible = false
-			
+
 			for _, child in ipairs(Content:GetChildren()) do
 				if child:IsA('Frame') then
 					Content.Size -= UDim2.new(0, 0, 0, 18)
@@ -263,7 +263,7 @@ function createDropdown(text : string, parent : Instance)
 				end
 			end
 		end
-		
+
 		parent.CanvasSize = UDim2.new(0, 0, 0, 0)
 		for _, child in ipairs(parent:GetChildren()) do
 			if child:IsA('TextButton') then
@@ -271,7 +271,7 @@ function createDropdown(text : string, parent : Instance)
 			end
 		end
 	end)
-	
+
 	return DropdownButton
 end
 
@@ -279,7 +279,7 @@ function createInstanceFrame(script : Instance, parent : Instance, custom_text :
 	InstanceList.CanvasSize += UDim2.new(0, 0, 0, 18)
 	parent.Content.Size += UDim2.new(0, 0, 0, 18)
 	parent.Size += UDim2.new(0, 0, 0, 18)
-	
+
 	local InstanceFrame = create("Frame", {Parent = parent.Content;BackgroundTransparency = 1;Active = true;Selectable = true;BorderSizePixel = 1;BorderMode = 'Inset';Size = UDim2.new(1, -11, 0, 18);BorderColor3 = Color3.fromRGB(66, 66, 66);Name = [[InstanceFrame]];BackgroundColor3 = Color3.fromRGB(66, 66, 66);})
 	local Icon = create("ImageLabel", {Parent = InstanceFrame;AnchorPoint = Vector2.new(0, 0.5);Image = Assets.Icons[script.ClassName];BorderSizePixel = 0;Size = UDim2.new(0, 12, 1, 0);ScaleType = 'Fit';BorderColor3 = Color3.fromRGB(0, 0, 0);Name = [[Icon]];Position = UDim2.new(0, 0, 0.5, 0);BackgroundTransparency = 1;BackgroundColor3 = Color3.fromRGB(255, 255, 255);})
 	local Label = create("TextLabel", {Parent = InstanceFrame;BorderSizePixel = 0;RichText = true;TextTruncate = 'AtEnd';BackgroundColor3 = Color3.fromRGB(255, 255, 255);TextSize = 14;Size = UDim2.new(1, -16, 0, 19);TextXAlignment = Enum.TextXAlignment.Left;BorderColor3 = Color3.fromRGB(0, 0, 0);Text = script.Name;Font = Enum.Font.SourceSansSemibold;Name = [[Label]];Position = UDim2.new(0.0708661452, 0, -0.055555556, 0);TextColor3 = Color3.fromRGB(204, 204, 204);BackgroundTransparency = 1;})
@@ -288,51 +288,51 @@ function createInstanceFrame(script : Instance, parent : Instance, custom_text :
 	create("UIPadding", {Parent = InstanceFrame;PaddingLeft = UDim.new(0, 3);})
 	create("UIPadding", {Parent = Label;PaddingBottom = UDim.new(0, 1);})
 	create("UIListLayout", {Parent = InstanceFrame, FillDirection = 'Horizontal', VerticalAlignment = 'Center', Padding = UDim.new(0, 4)})
-	
+
 	if custom_text then
 		Label.Text = custom_text
 	end
-	
+
 	InstanceFrame.MouseEnter:Connect(function()
 		InstanceFrame.BackgroundTransparency = 0
 	end)
-	
+
 	InstanceFrame.MouseLeave:Connect(function()
 		InstanceFrame.BackgroundTransparency = 1
 	end)
-	
+
 	local function hideSettings()
 		SettingsMenu.Visible = false
 	end
-	
+
 	local function toggleSettings()
 		for _,__ in ipairs(InstanceList:GetChildren()) do if __:IsA('Frame') then 
 				for _, __ in ipairs(__:GetChildren()) do if __:IsA('UIStroke') then __:Destroy() end end
 			end
 		end
-		
+
 		Selection = script
 		SettingsMenu.Parent = Gui
 		SettingsMenu.Position = UDim2.new(0, Dependencies.Mouse.X, 0, Dependencies.Mouse.Y)
 		if not SettingsMenu.Visible then 
 			SettingsMenu.Visible = not SettingsMenu.Visible
 		end
-		
+
 		for _,__ in ipairs(InstanceList:GetChildren()) do if __:IsA('Frame') then 
 				for _, __ in ipairs(__:GetChildren()) do if __:IsA('UIStroke') then __:Destroy() end end
 				print('i be slangin')
 			end
 		end
-		
+
 		-- create("UIStroke", {Parent = InstanceFrame, ApplyStrokeMode = Enum.ApplyStrokeMode.Border, Color = Color3.fromRGB(67, 191, 254)})
 		-- InstanceFrame.BorderColor3 = Color3.fromRGB(67, 191, 254)
 	end
-	
+
 	--SettingsButton.Visible = false
 	--SettingsButton.MouseButton1Click:Connect(toggleSettings)
 	Hitbox.MouseButton1Down:Connect(hideSettings)
 	Hitbox.MouseButton2Down:Connect(toggleSettings)
-	
+
 	return InstanceFrame	
 end
 
@@ -340,14 +340,14 @@ function createPropertyFrame(list : instance, parent : instance, property : stri
 	list.CanvasSize += UDim2.new(0, 0, 0, 18)
 	parent.Content.Size += UDim2.new(0, 0, 0, 18)
 	parent.Size += UDim2.new(0, 0, 0, 18)
-	
+
 	local PropertyFrame = create("Frame", {Parent = parent.Content;BorderSizePixel = 0;Size = UDim2.new(1, 0, 0, 18);BorderColor3 = Color3.fromRGB(0, 0, 0);Name = [[PropertyFrame]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);})
 	local PropertyLabel = create("TextLabel", {BorderMode = 'Outline';BackgroundColor3 = Color3.fromRGB(46, 46, 46);Parent = PropertyFrame;AnchorPoint = Vector2.new(0, 0.5);TextSize = 14;Size = UDim2.new(0.5, 0, 0, 18);TextXAlignment = Enum.TextXAlignment.Left;BorderColor3 = Color3.fromRGB(34, 34, 34);Text = tostring(property);Font = Enum.Font.SourceSansSemibold;Name = [[PropertyLabel]];Position = UDim2.new(0, 0, 0.5, 0);TextColor3 = Color3.fromRGB(204, 204, 204);})
 	local PropertyValueLabel = create("TextLabel", {BorderMode = 'Outline';BackgroundColor3 = Color3.fromRGB(46, 46, 46);Parent = PropertyFrame;AnchorPoint = Vector2.new(1, 0.5);TextSize = 14;Size = UDim2.new(0.5, 0, 0, 18);TextXAlignment = Enum.TextXAlignment.Left;BorderColor3 = Color3.fromRGB(34, 34, 34);Text = tostring(value);Font = Enum.Font.SourceSansSemibold;Name = [[PropertyValueLabel]];Position = UDim2.new(1, 0, 0.5, 0);TextColor3 = Color3.fromRGB(204, 204, 204);})
-	
+
 	create("UIPadding", {Parent = PropertyLabel;PaddingRight = UDim.new(0, 6);PaddingLeft = UDim.new(0, 6);PaddingBottom = UDim.new(0, 1);})
 	create("UIPadding", {Parent = PropertyValueLabel;PaddingRight = UDim.new(0, 6);PaddingLeft = UDim.new(0, 6);PaddingBottom = UDim.new(0, 1);})
-	
+
 	return PropertyFrame
 end
 
@@ -376,14 +376,14 @@ coroutine.wrap(function()
 	InstanceList.ScrollingEnabled = false
 	local lastScrollY = InstanceList.CanvasPosition.Y
 	local MouseDown = false
-	
+
 	InstanceList.MouseEnter:Connect(function() MouseDown = true end)
 	InstanceList.MouseLeave:Connect(function() MouseDown = false end)
 
 	game:GetService('UserInputService').InputChanged:Connect(function(input)
 		if MouseDown and input.UserInputType == Enum.UserInputType.MouseWheel then
 			SettingsMenu.Visible = false
-			
+
 			local deltaY = input.Position.Z
 			local currentScrollY = InstanceList.CanvasPosition.Y
 			if deltaY > 0 then InstanceList.CanvasPosition = Vector2.new(0, currentScrollY - 54)
@@ -406,48 +406,48 @@ coroutine.wrap(function()
 			task.wait(.16)
 			DumpButtonFill.Size = UDim2.new(0, 0, 1, 0)
 		end)()
-		
+
 		if getgenv().DumpingStatus then return end
-		
+
 		getgenv().DumpingStatus = true
 		DumpButton.Text = 'DUMPING'
-		
+
 		local success, err = pcall(function()
 			print(Selection)
 			clearDump()
 			populateDump(createInstanceFrame)
 		end)
-		
+
 		if err then 
 			warn('ERROR OCCURED WHILE DUMPING: ' .. tostring(err)) 
-			
+
 			coroutine.wrap(function()
 				DumpButton.Text = 'Failed to dump. Read console' task.wait(1)
 				DumpButton.Text = 'Dump'
 			end)()
 		elseif success then
-			
+
 			coroutine.wrap(function()
 				local DumpString = '-- Generated by dooms script dumper'
-				
+
 				DumpString = string.format(DumpString .. '\nLocalScripts = {')
 				for index, key in ipairs(Dump.LocalScripts) do
 					DumpString = string.format(DumpString .. '\n	"%s" = %s,', index, key)
 				end
 				DumpString = string.format(DumpString .. '\n}')
-				
+
 				DumpString = string.format(DumpString .. '\n\nModuleScripts = {')
 				for index, key in ipairs(Dump.ModuleScripts) do
 					DumpString = string.format(DumpString .. '\n	"%s" = %s,', index, key)
 				end
 				DumpString = string.format(DumpString .. '\n}')
-				
+
 				getgenv().setclipboard(DumpString)
 				DumpButton.Text = 'Successfully Dumped + Copied to clipboard' task.wait(3)
 				DumpButton.Text = 'Dump'
 			end)()
 		end
-		
+
 		getgenv().DumpingStatus = false	
 	end)
 
@@ -459,21 +459,21 @@ coroutine.wrap(function()
 		PropertiesWindow = createWindow({ Name = 'Properties', Size = UDim2.new(0, 274, 0, 307), Position = MainWindow.Instance.Position, Anchor = Vector2.new(1, 1) }) 
 		PropertiesWindow.ZIndex = 99
 		PropertiesWindow:Open()	
-		
+
 		local function loadProperties(instance)
 			if Properties[instance.ClassName] then
 				PropertiesWindow.Instance.Topbar.TextLabel.Text = string.format('Properties - %s "%s"', instance.ClassName, instance.Name)
-				
+
 				local PropertyList = create("ScrollingFrame", {Parent = PropertiesWindow.Instance; CanvasSize = UDim2.new(0,0,0,0); Active = true;TopImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);BorderMode = Enum.BorderMode.Inset;Size = UDim2.new(0, 272, 0, 220);ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80);LayoutOrder = 5;BorderColor3 = Color3.fromRGB(34, 34, 34);ScrollBarThickness = 10;Name = [[InstancesFrame]];Position = UDim2.new(0, 0, 0, 0);BottomImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundTransparency = 1;})
 				local DataDropdown = createDropdown('Data', PropertyList)
 				local BehaviorDropdown = createDropdown('Behavior', PropertyList)
-				
+
 				create('UIListLayout', { Parent = PropertyList })
-				
+
 				for _, property in pairs(Properties[instance.ClassName].Data) do
 					createPropertyFrame(PropertyList, DataDropdown, property, instance[property], false)
 				end
-				
+
 				for _, property in pairs(Properties[instance.ClassName].Behavior) do
 					createPropertyFrame(PropertyList, BehaviorDropdown, property, instance[property], false)
 				end
@@ -482,7 +482,7 @@ coroutine.wrap(function()
 
 		loadProperties(Selection)
 	end)
-	
+
 	--> COPY PATH BUTTON
 	CopyPathButton.MouseButton1Click:Connect(function()
 		if not Selection then return end
@@ -498,20 +498,20 @@ coroutine.wrap(function()
 			CopyPathButton.Text = 'Copy Path' 
 		end
 	end)
-	
+
 	--> VIEW SOURCE BUTTON
 	ViewSourceButton.MouseButton1Click:Connect(function()
 		if RawScriptWindow then RawScriptWindow:Close() end
 		if not Selection then return end
-		
+
 		RawScriptWindow = createWindow({ Name = string.format('Viewing Raw Script - %s "%s"', Selection.ClassName, Selection.Name), Size = UDim2.new(0, 550, 0, 450), Position = UDim2.new(0.5, 0, 0.5, 0), Anchor = Vector2.new(0.5, 0.5) })
 		RawScriptWindow:Open()
-		
+
 		local RawCodeFrame = create("ScrollingFrame", {Active = true;CanvasSize = UDim2.new(0, 0, 0, 0);TopImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);BorderMode = Enum.BorderMode.Inset;Parent = RawScriptWindow.Instance;Size = UDim2.new(1, 0, 1, -22);ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80);LayoutOrder = 5;BorderColor3 = Color3.fromRGB(34, 34, 34);ScrollBarThickness = 10;Position = UDim2.new(0.00181818183, 0, 0.0511111096, 0);BottomImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundTransparency = 1;})
 		local CodeBox = create("TextBox", {CursorPosition = -1;PlaceholderColor3 = Color3.fromRGB(100, 100, 100);BorderSizePixel = 0;TextEditable = false;RichText = true;TextYAlignment = Enum.TextYAlignment.Top;BackgroundColor3 = Color3.fromRGB(36, 36, 36);Parent = RawCodeFrame;TextXAlignment = Enum.TextXAlignment.Left;PlaceholderText = [[-- failed to decompile]];TextSize = 13;Size = UDim2.new(1, 0, 1, 0);TextColor3 = Color3.fromRGB(255, 255, 255);BorderColor3 = Color3.fromRGB(0, 0, 0);Text = [[]];Font = Enum.Font.RobotoMono;ClearTextOnFocus = false;})
 		local UIListLayout = create("UIListLayout", {Parent = RawCodeFrame;SortOrder = Enum.SortOrder.LayoutOrder;})
 		local UIPadding = create("UIPadding", {PaddingTop = UDim.new(0, 4);Parent = CodeBox;PaddingLeft = UDim.new(0, 4);})
-		
+
 		local function formatCode(source)
 			local source = source
 			local ogSource = source
@@ -608,13 +608,13 @@ coroutine.wrap(function()
 
 			return source
 		end
-		
+
 		local _, __ = pcall(function()
 			local Colored = formatCode(getgenv().decompile(Selection))
 			local Old = getgenv().decompile(Selection)
-			
+
 			CodeBox.Text = Colored
-			
+
 			RawCodeFrame.CanvasSize = UDim2.new(0,CodeBox.TextBounds.X, 0, 0, 25)
 			RawCodeFrame.CanvasSize += UDim2.new(0, CodeBox.TextBounds.X, 0, CodeBox.TextBounds.Y)
 
@@ -626,7 +626,7 @@ coroutine.wrap(function()
 				CodeBox.Text = Colored
 			end)
 		end) 
-		
+
 		if __ then 
 			warn('Error loading raw script viewer: '.. __) 
 			CodeBox.Text = ('-- failed to decompile: ' .. __)
@@ -641,7 +641,7 @@ coroutine.wrap(function()
 		clearDump()
 		populateDump(createInstanceFrame)
 	end)
-	
+
 	FilterBox.FocusLost:Connect(function()
 		IndexFilter = FilterBox.Text
 		clearDump()
