@@ -488,6 +488,10 @@ coroutine.wrap(function()
 					createPropertyFrame(PropertyList, AttributesDropdown, index, tag, false)
 				end
 
+				if instance.ClassName == 'ModuleScript' then
+					createDropdown('Requires', PropertyList)
+				end
+
 			else return warn('cant do this no no no cant do this no jnone of that') end
 		end
 
