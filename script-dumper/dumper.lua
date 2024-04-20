@@ -1,7 +1,7 @@
 --[[
 		DOOMS SCRIPT DUMPER
 		> SECURE EDITION
-		> VERSION 1.0.0
+		> VERSION 1.0.1
 ]]--
 
 -- getgenv = getgenv or getfenv -- only used for debugging
@@ -523,7 +523,7 @@ coroutine.wrap(function()
 		RawScriptWindow:Open()
 
 		local RawCodeFrame = create("ScrollingFrame", {Active = true;CanvasSize = UDim2.new(0, 0, 0, 0);TopImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);BorderMode = Enum.BorderMode.Inset;Parent = RawScriptWindow.Instance;Size = UDim2.new(1, 0, 1, -22);ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80);LayoutOrder = 5;BorderColor3 = Color3.fromRGB(34, 34, 34);ScrollBarThickness = 10;Position = UDim2.new(0.00181818183, 0, 0.0511111096, 0);BottomImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundTransparency = 1;})
-		local CodeBox = create("TextBox", {CursorPosition = -1;PlaceholderColor3 = Color3.fromRGB(100, 100, 100);BorderSizePixel = 0;TextEditable = false;RichText = true;TextYAlignment = Enum.TextYAlignment.Top;BackgroundColor3 = Color3.fromRGB(36, 36, 36);Parent = RawCodeFrame;TextXAlignment = Enum.TextXAlignment.Left;PlaceholderText = [[-- failed to decompile]];TextSize = 13;Size = UDim2.new(1, 0, 1, 0);TextColor3 = Color3.fromRGB(255, 255, 255);BorderColor3 = Color3.fromRGB(0, 0, 0);Text = [[]];Font = Enum.Font.RobotoMono;ClearTextOnFocus = false;})
+		local CodeBox = create("TextBox", {CursorPosition = -1;PlaceholderColor3 = Color3.fromRGB(100, 100, 100);BorderSizePixel = 0;TextEditable = false;RichText = true;TextYAlignment = Enum.TextYAlignment.Top;BackgroundColor3 = Color3.fromRGB(36, 36, 36);Parent = RawCodeFrame;TextXAlignment = Enum.TextXAlignment.Left;PlaceholderText = [[-- loading]];TextSize = 13;Size = UDim2.new(1, 0, 1, 0);TextColor3 = Color3.fromRGB(255, 255, 255);BorderColor3 = Color3.fromRGB(0, 0, 0);Text = [[]];Font = Enum.Font.RobotoMono;ClearTextOnFocus = false;})
 		local UIListLayout = create("UIListLayout", {Parent = RawCodeFrame;SortOrder = Enum.SortOrder.LayoutOrder;})
 		local UIPadding = create("UIPadding", {PaddingTop = UDim.new(0, 4);Parent = CodeBox;PaddingLeft = UDim.new(0, 4);})
 
@@ -698,3 +698,4 @@ if not getgenv().setclipboard then
 end
 
 MainWindow:Open()
+warn('Loaded Dooms Script Dumper V1.0.1')
