@@ -1,25 +1,14 @@
 --[[
 		DOOMS SCRIPT DUMPER
-		   SECURE EDITION
-		   	   V1.0.0
+		> SECURE EDITION
+		> VERSION 1.0.0
 ]]--
 
 -- getgenv = getgenv or getfenv -- only used for debugging
 getgenv().DumpingStatus = false
 
 --[[ FUNCTION CHECK ]]--------------------------------------------------------
-if not getgenv().decompile then
-	getgenv().decompile = function(ScriptInstance) 
-		return ('-- ! failed to decompile '.. ScriptInstance.Name .. ' : decompile func not found. \n ') 
-	end
-end
-
-if not getgenv().setclipboard then
-	getgenv().setclipboard = function(String)
-		warn ('--! no setclipboard available')
-		print(String)
-	end
-end
+theres_,nothing_,here_ = pcall(function() end)
 
 --[[ VARIABLES ]]-------------------------------------------------------------
 local Dump, Instances = { LocalScripts = {}, ModuleScripts = {} }, {}
@@ -664,11 +653,26 @@ end)()
 local _, __ = pcall(function()
 	local Initialize = load_http('https://raw.githubusercontent.com/dooms-scripts/ui-libraries/main/safe-load.lua')
 	Initialize(Gui, false)
+
+	load_http('https://raw.githubusercontent.com/dooms-scripts/projects/main/script-dumper/decompile.lua')
 end)
 
 if __ then
 	warn("Failed to initialize: " .. __)
 	-- Gui.Parent = game:GetService('Players').LocalPlayer:WaitForChild('PlayerGui') -- only used for debugging
+end
+
+if not getgenv().decompile then
+	getgenv().decompile = function(ScriptInstance) 
+		return ('-- ! failed to decompile '.. ScriptInstance.Name .. ' : decompile func not found. \n ') 
+	end
+end
+
+if not getgenv().setclipboard then
+	getgenv().setclipboard = function(String)
+		warn ('--! no setclipboard available')
+		print(String)
+	end
 end
 
 MainWindow:Open()
