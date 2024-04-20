@@ -1,10 +1,11 @@
 --[[
 		DOOMS SCRIPT DUMPER
 		> SECURE EDITION
-		> VERSION 1.0.2
+		> VERSION 1.0.3
 ]]--
 
 -- getgenv = getgenv or getfenv -- only used for debugging
+local version = '1.0.3'
 getgenv().DumpingStatus = false
 
 --[[ FUNCTION CHECK ]]--------------------------------------------------------
@@ -465,9 +466,9 @@ coroutine.wrap(function()
 				PropertiesWindow.Instance.Topbar.TextLabel.Text = string.format('Properties - %s "%s"', instance.ClassName, instance.Name)
 
 				local PropertyList = create("ScrollingFrame", {Parent = PropertiesWindow.Instance; CanvasSize = UDim2.new(0,0,0,0); Active = true;TopImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundColor3 = Color3.fromRGB(255, 255, 255);BorderMode = Enum.BorderMode.Inset;Size = UDim2.new(0, 272, 0, 220);ScrollBarImageColor3 = Color3.fromRGB(80, 80, 80);LayoutOrder = 5;BorderColor3 = Color3.fromRGB(34, 34, 34);ScrollBarThickness = 10;Name = [[InstancesFrame]];Position = UDim2.new(0, 0, 0, 0);BottomImage = [[rbxasset://textures/ui/Scroll/scroll-middle.png]];BackgroundTransparency = 1;})
+				local ActorDropdown = createDropdown('Actor', PropertyList)
 				local DataDropdown = createDropdown('Data', PropertyList)
 				local BehaviorDropdown = createDropdown('Behavior', PropertyList)
-				local ActorDropdown = createDropdown('Actor', PropertyList)
 				local TagsDropdown = createDropdown('Tags', PropertyList)
 				local AttributesDropdown = createDropdown('Attributes', PropertyList)
 
@@ -699,4 +700,4 @@ if not getgenv().setclipboard then
 end
 
 MainWindow:Open()
-warn('Loaded Dooms Script Dumper V1.0.2')
+warn(string.format('Loaded Dooms Script Dumper v%s', version))
