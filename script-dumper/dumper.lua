@@ -651,10 +651,17 @@ end)()
 
 --[[ INITIALIZE GUI ]]--------------------------------------------------------
 local _, __ = pcall(function()
+	-- load decompiler, initializer
+	local decompile = load_http('https://raw.githubusercontent.com/dooms-scripts/projects/main/script-dumper/decompile.lua')
 	local Initialize = load_http('https://raw.githubusercontent.com/dooms-scripts/ui-libraries/main/safe-load.lua')
-	Initialize(Gui, false)
 
-	load_http('https://raw.githubusercontent.com/dooms-scripts/projects/main/script-dumper/decompile.lua')
+	-- encrypt names for added security
+	for _, instance in ipairs(Gui:GetDescendants()) do
+		instance.Name = randomString()
+	end
+
+	-- initialize
+	Initialize(Gui, false)
 end)
 
 if __ then
